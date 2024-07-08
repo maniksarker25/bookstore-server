@@ -10,3 +10,7 @@ export async function up(knex: Knex): Promise<void> {
     table.foreign('author_id').references('authors.id');
   });
 }
+
+export async function down(knex: Knex): Promise<void> {
+  await knex.schema.dropTable('books');
+}
