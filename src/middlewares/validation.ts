@@ -8,10 +8,11 @@ export const validateRequest = (
 ) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    const success = false;
     const statusCode = 400;
     const message = errors.array()[0].msg;
     const errorDetails = errors.array();
-    const formattedError = { statusCode, message, errorDetails };
+    const formattedError = { success, statusCode, message, errorDetails };
     return res.status(400).json(formattedError);
   }
   next();

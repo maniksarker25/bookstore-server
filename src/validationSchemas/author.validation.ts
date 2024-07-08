@@ -2,7 +2,6 @@ import { body } from 'express-validator';
 
 export const createAuthorValidationSchema = [
   body('name')
-    .trim()
     .isString()
     .withMessage('Name must be a string.')
     .notEmpty()
