@@ -1,6 +1,5 @@
-import db from '../db/db'; // Adjust the path as per your project structure
-import { TAuthor } from '../types/author'; // Adjust the path as per your project structure
-
+import db from '../db/db';
+import { TAuthor } from '../types/author';
 class AuthorModel {
   static async findAll(): Promise<TAuthor[]> {
     return db('authors').select('*');
@@ -11,11 +10,13 @@ class AuthorModel {
   }
 
   static async create(author: TAuthor): Promise<number[]> {
-    return db('authors').insert(author).returning('id'); // Ensure 'db' is configured for PostgreSQL
+    return db('authors').insert(author).returning('id');
   }
 
   static async update(id: number, author: Partial<TAuthor>): Promise<number> {
-    return db('authors').where({ id }).update(author);
+    await db('authors').where({ id }).update(author);
+    const updatedAuthor = await db('authors').where({ id }).first();
+    return updatedAuthor;
   }
 
   static async delete(id: number): Promise<number> {

@@ -1,9 +1,10 @@
 import express, { Application } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import errorHandler from './utils/errorHandler';
+// import errorHandler from './utils/errorHandler';
 import notFound from './utils/notFound';
 import { authorRoutes } from './routes/authorRoutes';
+import globalErrorHandler from './middlewares/globalErrorHandler';
 
 // import authorRoutes from './routes/authorRoutes';
 // import bookRoutes from './routes/bookRoutes';
@@ -19,7 +20,7 @@ app.use(cors());
 app.use('/api/authors', authorRoutes);
 // app.use('/api', bookRoutes);
 
-app.use(errorHandler);
+app.use(globalErrorHandler);
 app.use(notFound);
 
 export default app;

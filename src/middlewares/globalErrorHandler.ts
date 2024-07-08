@@ -4,8 +4,7 @@
 // /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from 'express';
 import httpStatus from 'http-status';
-import { validationResult } from 'express-validator';
-import AppError from '../error/appError';
+import AppError from '../utils/appError';
 
 const globalErrorHandler = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -19,16 +18,7 @@ const globalErrorHandler = (
   let message = 'Something went wrong';
   //   let errorMessage = '';
   let errorDetails = {};
-  // Check for validation errors
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    statusCode = httpStatus.BAD_REQUEST;
-    message = 'Validation error';
-    errorDetails = errors.array().map((error) => ({
-      field: error.type,
-      message: error.msg,
-    }));
-  } else if (err instanceof AppError) {
+  if (err instanceof AppError) {
     statusCode = err.statusCode;
     message = err.message;
     errorDetails = err;

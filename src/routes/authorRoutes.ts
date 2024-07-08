@@ -12,6 +12,12 @@ router.post(
   validateRequest,
   authorControllers.createAuthor,
 );
-// Define routes for other author operations
+router.put(
+  '/:id',
+  authorValidations.updateAuthorValidationSchema,
+  validateRequest,
+  authorControllers.updateAuthor,
+);
+router.delete('/:id', authorControllers.deleteAuthor);
 
 export const authorRoutes = router;
