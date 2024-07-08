@@ -42,7 +42,13 @@ const updateAuthor = catchAsync(async (req, res) => {
 });
 
 const deleteAuthor = catchAsync(async (req, res) => {
-  await AuthorModel.delete(Number(req.params.id));
+  const id = Number(req.params.id);
+
+  const author = await AuthorModel.findById(id);
+  if (!author) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Author not found');
+  }
+  await AuthorModel.delete(id);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
