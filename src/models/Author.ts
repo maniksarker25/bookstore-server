@@ -1,25 +1,25 @@
-import knex from 'knex';
-import { TAuthor } from '../types/author';
+import db from '../db/db'; // Adjust the path as per your project structure
+import { TAuthor } from '../types/author'; // Adjust the path as per your project structure
 
 class AuthorModel {
   static async findAll(): Promise<TAuthor[]> {
-    return knex('authors').select('*');
+    return db('authors').select('*');
   }
 
-  static async findById(id: number): Promise<TAuthor> {
-    return knex('authors').where({ id }).first();
+  static async findById(id: number): Promise<TAuthor | undefined> {
+    return db('authors').where({ id }).first();
   }
 
   static async create(author: TAuthor): Promise<number[]> {
-    return knex('authors').insert(author).returning('id');
+    return db('authors').insert(author).returning('id'); // Ensure 'db' is configured for PostgreSQL
   }
 
   static async update(id: number, author: Partial<TAuthor>): Promise<number> {
-    return knex('authors').where({ id }).update(author);
+    return db('authors').where({ id }).update(author);
   }
 
   static async delete(id: number): Promise<number> {
-    return knex('authors').where({ id }).del();
+    return db('authors').where({ id }).del();
   }
 }
 
