@@ -1,6 +1,10 @@
 import express, { Application } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import errorHandler from './utils/errorHandler';
+import notFound from './utils/notFound';
+import { authorRoutes } from './routes/authorRoutes';
+
 // import authorRoutes from './routes/authorRoutes';
 // import bookRoutes from './routes/bookRoutes';
 // import { errorHandler } from './utils/errorHandler';
@@ -12,9 +16,10 @@ const app: Application = express();
 app.use(express.json());
 app.use(cors());
 
-// app.use('/api', authorRoutes);
+app.use('/api/authors', authorRoutes);
 // app.use('/api', bookRoutes);
 
-// app.use(errorHandler);
+app.use(errorHandler);
+app.use(notFound);
 
 export default app;
