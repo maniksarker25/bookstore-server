@@ -1,6 +1,6 @@
 import { body } from 'express-validator';
 
-export const registerUserValidationSchema = [
+const registerUserValidationSchema = [
   body('username').custom((value) => {
     if (!value) {
       throw new Error('Username is required.');

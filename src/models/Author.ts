@@ -1,6 +1,7 @@
 import db from '../db/db';
 import { TAuthor } from '../types/author';
 class AuthorModel {
+  // find all authors------------
   static async findAll(
     page = 1,
     limit = 10,
@@ -38,20 +39,24 @@ class AuthorModel {
     };
   }
 
+  // find by id ----------
   static async findById(id: number): Promise<TAuthor | undefined> {
     return db('authors').where({ id }).first();
   }
 
+  // create author -------
   static async create(author: TAuthor): Promise<number[]> {
     return db('authors').insert(author).returning('id');
   }
 
+  // update author ----------
   static async update(id: number, author: Partial<TAuthor>): Promise<number> {
     await db('authors').where({ id }).update(author);
     const updatedAuthor = await db('authors').where({ id }).first();
     return updatedAuthor;
   }
 
+  // delete author ---------
   static async delete(id: number): Promise<number> {
     return db('authors').where({ id }).del();
   }
