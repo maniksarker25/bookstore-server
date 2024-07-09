@@ -6,6 +6,7 @@ import notFound from './utils/notFound';
 import { authorRoutes } from './routes/authorRoutes';
 import globalErrorHandler from './middlewares/globalErrorHandler';
 import { bookRoutes } from './routes/bookRoutes';
+import { authRoutes } from './routes/authRoutes';
 dotenv.config();
 
 const app: Application = express();
@@ -20,6 +21,7 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use('/api/authors', authorRoutes);
 app.use('/api/books', bookRoutes);
+app.use('/api/auth', authRoutes);
 
 app.use(globalErrorHandler);
 app.use(notFound);
