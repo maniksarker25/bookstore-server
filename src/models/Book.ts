@@ -6,11 +6,27 @@ class BookModal {
   static async findAll(
     page = 1,
     limit = 10,
+    searchParams: string = '',
   ): Promise<{ books: TBook[]; total: number; page: number; limit: number }> {
     const offset = (page - 1) * limit;
-    const books = await db('books').select('*').limit(limit).offset(offset);
-    const [{ count }] = await db('books').count('* as count');
+
+    let query = db('books').select('*').limit(limit).offset(offset);
+
+    if (searchParams) {
+      query = query.where('title', 'like', `%${searchParams}%`);
+    }
+
+    const books = await query;
+
+    let countQuery = db('books').count('* as count');
+
+    if (searchParams) {
+      countQuery = countQuery.where('title', 'like', `%${searchParams}%`);
+    }
+
+    const [{ count }] = await countQuery;
     const total = Number(count);
+
     return {
       books,
       total,
@@ -18,7 +34,6 @@ class BookModal {
       limit,
     };
   }
-
   static async findById(id: number): Promise<TBook | undefined> {
     return db('books').where({ id }).first();
   }

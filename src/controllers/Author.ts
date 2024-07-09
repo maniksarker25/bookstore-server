@@ -33,8 +33,8 @@ const getSingleAuthor = catchAsync(async (req, res) => {
 const getAllAuthor = catchAsync(async (req, res) => {
   const page = parseInt(req?.query?.page as string, 10) || 1;
   const limit = parseInt(req?.query?.limit as string, 10) || 10;
-
-  const result = await AuthorModel.findAll(page, limit);
+  const searchParams = (req.query.searchParams as string) || '';
+  const result = await AuthorModel.findAll(page, limit, searchParams);
 
   sendResponse(res, {
     statusCode: 200,

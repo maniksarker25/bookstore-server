@@ -29,8 +29,8 @@ const createBook = catchAsync(async (req, res) => {
 const getAllBook = catchAsync(async (req, res) => {
   const page = parseInt(req?.query?.page as string, 10) || 1;
   const limit = parseInt(req?.query?.limit as string, 10) || 10;
-
-  const result = await BookModal.findAll(page, limit);
+  const searchParams = req?.query?.searchParams as string | '';
+  const result = await BookModal.findAll(page, limit, searchParams);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

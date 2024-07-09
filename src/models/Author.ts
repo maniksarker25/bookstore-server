@@ -4,6 +4,7 @@ class AuthorModel {
   static async findAll(
     page = 1,
     limit = 10,
+    searchParams: string = '',
   ): Promise<{
     authors: TAuthor[];
     total: number;
@@ -12,11 +13,21 @@ class AuthorModel {
   }> {
     const offset = (page - 1) * limit;
 
-    // Fetch authors for the current page and limit
-    const authors = await db('authors').select('*').limit(limit).offset(offset);
+    let query = db('authors').select('*').limit(limit).offset(offset);
 
-    // Fetch total count of authors
-    const [{ count }] = await db('authors').count('* as count');
+    if (searchParams) {
+      query = query.where('name', 'like', `%${searchParams}%`);
+    }
+
+    const authors = await query;
+
+    let countQuery = db('authors').count('* as count');
+
+    if (searchParams) {
+      countQuery = countQuery.where('name', 'like', `%${searchParams}%`);
+    }
+
+    const [{ count }] = await countQuery;
     const total = Number(count);
 
     return {
