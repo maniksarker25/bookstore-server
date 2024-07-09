@@ -57,7 +57,7 @@ const deleteBook = catchAsync(async (req, res) => {
   });
 });
 
-export const authorControllers = {
+export const bookControllers = {
   createBook,
   getAllBook,
   updateBook,
