@@ -43,7 +43,7 @@ const getSingleBook = catchAsync(async (req, res) => {
     throw new AppError(httpStatus.NOT_FOUND, 'Book not found');
   }
   sendResponse(res, {
-    statusCode: httpStatus.CREATED,
+    statusCode: httpStatus.OK,
     success: true,
     message: 'Book retrieved successfully',
     data: result,
@@ -58,6 +58,17 @@ const updateBook = catchAsync(async (req, res) => {
   const book = await BookModal.findById(id);
   if (!book) {
     throw new AppError(httpStatus.NOT_FOUND, 'Book does not exits');
+  }
+  if (updatedBookData?.author_id) {
+    const author = await AuthorModel.findById(
+      Number(updatedBookData.author_id),
+    );
+    if (!author) {
+      throw new AppError(
+        httpStatus.BAD_REQUEST,
+        'Invalid author id, this author doest not exist',
+      );
+    }
   }
   const result = await BookModal.update(id, updatedBookData);
   sendResponse(res, {
@@ -74,7 +85,10 @@ const deleteBook = catchAsync(async (req, res) => {
 
   const book = await BookModal.findById(id);
   if (!book) {
-    throw new AppError(httpStatus.NOT_FOUND, 'Book  not found');
+    throw new AppError(
+      httpStatus.NOT_FOUND,
+      'Invalid book id, this book does not exist',
+    );
   }
   await BookModal.delete(id);
   sendResponse(res, {

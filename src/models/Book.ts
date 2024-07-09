@@ -16,7 +16,9 @@ class BookModal {
   }
 
   static async update(id: number, book: Partial<TBook>): Promise<number> {
-    return db('books').where({ id }).update(book);
+    await db('books').where({ id }).update(book);
+    const updatedBook = await db('books').where({ id }).first();
+    return updatedBook;
   }
 
   static async delete(id: number): Promise<number> {
