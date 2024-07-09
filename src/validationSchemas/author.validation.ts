@@ -11,7 +11,12 @@ export const createAuthorValidationSchema = [
     .isLength({ max: 255 })
     .withMessage('Name cannot be longer than 255 characters.'),
 
-  body('bio').optional().isString().withMessage('Bio must be a string.'),
+  body('bio')
+    .optional()
+    .isString()
+    .withMessage('Bio must be a string.')
+    .notEmpty()
+    .withMessage('Bio cannot be a empty string.'),
 
   body('birthdate')
     .isISO8601()
@@ -19,15 +24,22 @@ export const createAuthorValidationSchema = [
 ];
 
 // validation schema for update author
-export const updateAuthorValidationSchema = [
+const updateAuthorValidationSchema = [
   body('name')
     .optional()
     .isString()
     .withMessage('Name must be a string.')
     .isLength({ max: 255 })
-    .withMessage('Name cannot be longer than 255 characters.'),
+    .withMessage('Name cannot be longer than 255 characters.')
+    .notEmpty()
+    .withMessage("You don't add empty string for name"),
 
-  body('bio').optional().isString().withMessage('Bio must be a string.'),
+  body('bio')
+    .optional()
+    .isString()
+    .withMessage('Bio must be a string.')
+    .notEmpty()
+    .withMessage('Bio cannot be a empty string.'),
 
   body('birthdate')
     .optional()
