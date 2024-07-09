@@ -1,15 +1,22 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { body } from 'express-validator';
 
 // validation schema for create author
 
 export const createAuthorValidationSchema = [
-  body('name')
-    .isString()
-    .withMessage('Name must be a string.')
-    .notEmpty()
-    .withMessage('Name is required.')
-    .isLength({ max: 255 })
-    .withMessage('Name cannot be longer than 255 characters.'),
+  body('name').custom((value, { req }) => {
+    if (!value) {
+      throw new Error('Name is required.');
+    } else if (typeof value !== 'string') {
+      throw new Error('Name must be a string.');
+    } else if (value.trim().length === 0) {
+      throw new Error('Name cannot be empty.');
+    } else if (value.length > 255) {
+      throw new Error('Name cannot be longer than 255 characters.');
+    }
+    return true;
+  }),
 
   body('bio')
     .optional()
@@ -27,12 +34,18 @@ export const createAuthorValidationSchema = [
 const updateAuthorValidationSchema = [
   body('name')
     .optional()
-    .isString()
-    .withMessage('Name must be a string.')
-    .isLength({ max: 255 })
-    .withMessage('Name cannot be longer than 255 characters.')
-    .notEmpty()
-    .withMessage("You don't add empty string for name"),
+    .custom((value, { req }) => {
+      if (!value) {
+        throw new Error('Name is required.');
+      } else if (typeof value !== 'string') {
+        throw new Error('Name must be a string.');
+      } else if (value.trim().length === 0) {
+        throw new Error('Name cannot be empty.');
+      } else if (value.length > 255) {
+        throw new Error('Name cannot be longer than 255 characters.');
+      }
+      return true;
+    }),
 
   body('bio')
     .optional()

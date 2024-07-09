@@ -1,14 +1,21 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
 import { body } from 'express-validator';
 
-// create book validation schema here ---------
+// create book validation schema here
 const createBookValidationSchema = [
-  body('title')
-    .isString()
-    .withMessage('Title must be a string.')
-    .notEmpty()
-    .withMessage('Title is required.')
-    .isLength({ max: 255 })
-    .withMessage('Title cannot be longer than 255 characters.'),
+  body('title').custom((value, { req }) => {
+    if (!value) {
+      throw new Error('Title is required.');
+    } else if (typeof value !== 'string') {
+      throw new Error('Title must be a string.');
+    } else if (value.trim().length === 0) {
+      throw new Error('Title cannot be empty.');
+    } else if (value.length > 255) {
+      throw new Error('Title cannot be longer than 255 characters.');
+    }
+    return true;
+  }),
 
   body('description')
     .optional()
@@ -32,12 +39,18 @@ const createBookValidationSchema = [
 const updateBookValidationSchema = [
   body('title')
     .optional()
-    .isString()
-    .withMessage('Title must be a string.')
-    .notEmpty()
-    .withMessage('Title is required.')
-    .isLength({ max: 255 })
-    .withMessage('Title cannot be longer than 255 characters.'),
+    .custom((value, { req }) => {
+      if (!value) {
+        throw new Error('Title is required.');
+      } else if (typeof value !== 'string') {
+        throw new Error('Title must be a string.');
+      } else if (value.trim().length === 0) {
+        throw new Error('Title cannot be empty.');
+      } else if (value.length > 255) {
+        throw new Error('Title cannot be longer than 255 characters.');
+      }
+      return true;
+    }),
 
   body('description')
     .optional()
