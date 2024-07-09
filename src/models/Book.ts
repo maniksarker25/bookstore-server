@@ -3,6 +3,7 @@ import { TBook } from '../types/book';
 import db from '../db/db';
 
 class BookModal {
+  // find all books ------
   static async findAll(
     page = 1,
     limit = 10,
@@ -34,13 +35,17 @@ class BookModal {
       limit,
     };
   }
+  // find by id ------
   static async findById(id: number): Promise<TBook | undefined> {
     return db('books').where({ id }).first();
   }
 
+  // create book ----------------
   static async create(book: TBook): Promise<number[]> {
     return db('books').insert(book).returning('id');
   }
+
+  // update book ---------
 
   static async update(id: number, book: Partial<TBook>): Promise<number> {
     await db('books').where({ id }).update(book);
@@ -48,10 +53,12 @@ class BookModal {
     return updatedBook;
   }
 
+  // delete book -----------
   static async delete(id: number): Promise<number> {
     return db('books').where({ id }).del();
   }
 
+  // find book by author id --------------
   static async findByAuthorId(authorId: number): Promise<TBook[]> {
     return db('books').where({ author_id: authorId });
   }
