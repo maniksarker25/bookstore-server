@@ -7,6 +7,7 @@ import { bookValidations } from '../validationSchemas/book.validation';
 const router = Router();
 
 router.get('/', bookControllers.getAllBook);
+router.get('/:id', bookControllers.getSingleBook);
 router.post(
   '/',
   bookValidations.createBookValidationSchema,

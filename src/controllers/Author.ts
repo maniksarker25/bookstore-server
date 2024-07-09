@@ -40,6 +40,8 @@ const getAllAuthor = catchAsync(async (req, res) => {
   });
 });
 
+// update author --------------------
+
 const updateAuthor = catchAsync(async (req, res) => {
   const id = Number(req.params.id);
   const updatedAuthorData = req.body;
@@ -57,6 +59,7 @@ const updateAuthor = catchAsync(async (req, res) => {
   });
 });
 
+// delete author ---------
 const deleteAuthor = catchAsync(async (req, res) => {
   const id = Number(req.params.id);
 

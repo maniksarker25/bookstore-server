@@ -5,16 +5,17 @@ import BookModal from '../models/Book';
 import AuthorModel from '../models/Author';
 import AppError from '../utils/appError';
 
+// create book ---------
 const createBook = catchAsync(async (req, res) => {
   const payload = req.body;
-  const authorData = await AuthorModel.findById(Number(payload?.id));
+  const authorData = await AuthorModel.findById(Number(payload?.author_id));
   if (!authorData) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
       'Invalid author id, this author doest not exist',
     );
   }
-  console.log('authorData');
+
   const result = await BookModal.create(payload);
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
@@ -24,6 +25,7 @@ const createBook = catchAsync(async (req, res) => {
   });
 });
 
+// get all book --------
 const getAllBook = catchAsync(async (req, res) => {
   const result = await BookModal.findAll();
   sendResponse(res, {
@@ -34,6 +36,21 @@ const getAllBook = catchAsync(async (req, res) => {
   });
 });
 
+// get single book ----------------
+const getSingleBook = catchAsync(async (req, res) => {
+  const result = await BookModal.findById(Number(req.params.id));
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Book not found');
+  }
+  sendResponse(res, {
+    statusCode: httpStatus.CREATED,
+    success: true,
+    message: 'Book retrieved successfully',
+    data: result,
+  });
+});
+
+// update book ----------------
 const updateBook = catchAsync(async (req, res) => {
   const id = Number(req.params.id);
   const updatedBookData = req.body;
@@ -51,6 +68,7 @@ const updateBook = catchAsync(async (req, res) => {
   });
 });
 
+// delete book ------------------
 const deleteBook = catchAsync(async (req, res) => {
   const id = Number(req.params.id);
 
@@ -69,6 +87,7 @@ const deleteBook = catchAsync(async (req, res) => {
 
 export const bookControllers = {
   createBook,
+  getSingleBook,
   getAllBook,
   updateBook,
   deleteBook,
