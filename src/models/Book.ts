@@ -3,8 +3,20 @@ import { TBook } from '../types/book';
 import db from '../db/db';
 
 class BookModal {
-  static async findAll(): Promise<TBook[]> {
-    return db('books').select('*');
+  static async findAll(
+    page = 1,
+    limit = 10,
+  ): Promise<{ books: TBook[]; total: number; page: number; limit: number }> {
+    const offset = (page - 1) * limit;
+    const books = await db('books').select('*').limit(limit).offset(offset);
+    const [{ count }] = await db('books').count('* as count');
+    const total = Number(count);
+    return {
+      books,
+      total,
+      page,
+      limit,
+    };
   }
 
   static async findById(id: number): Promise<TBook | undefined> {
