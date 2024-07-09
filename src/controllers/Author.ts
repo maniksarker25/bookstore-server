@@ -22,7 +22,7 @@ const getSingleAuthor = catchAsync(async (req, res) => {
     throw new AppError(httpStatus.NOT_FOUND, 'Author not found');
   }
   sendResponse(res, {
-    statusCode: httpStatus.CREATED,
+    statusCode: httpStatus.OK,
     success: true,
     message: 'Author retrieved successfully',
     data: result,

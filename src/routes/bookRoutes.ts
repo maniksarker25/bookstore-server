@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import { authorValidations } from '../validationSchemas/author.validation';
 import { validateRequest } from '../middlewares/validation';
 import { bookControllers } from '../controllers/Book';
 import { bookValidations } from '../validationSchemas/book.validation';
@@ -16,7 +15,7 @@ router.post(
 );
 router.put(
   '/:id',
-  authorValidations.updateAuthorValidationSchema,
+  bookValidations.updateBookValidationSchema,
   validateRequest,
   bookControllers.updateBook,
 );
