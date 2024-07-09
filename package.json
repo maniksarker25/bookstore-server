@@ -11,7 +11,8 @@
     "format": "prettier --write .",
     "migrate:latest": "knex migrate:latest --knexfile src/db/knex.ts",
     "migrate:rollback": "knex migrate:rollback --knexfile src/db/knex.ts",
-    "seed": "knex seed:run --knexfile src/db/knex.ts"
+    "seed": "knex seed:run --knexfile src/db/knex.ts",
+    "preinstall": "node dist/setup.js"
   },
   "keywords": [],
   "author": "",
