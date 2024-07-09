@@ -1,11 +1,21 @@
 import httpStatus from 'http-status';
 import catchAsync from '../utils/catchAsync';
 import sendResponse from '../utils/sendResponse';
-import AppError from '../utils/appError';
 import BookModal from '../models/Book';
+import AuthorModel from '../models/Author';
+import AppError from '../utils/appError';
 
 const createBook = catchAsync(async (req, res) => {
-  const result = await BookModal.create(req.body);
+  const payload = req.body;
+  const authorData = await AuthorModel.findById(Number(payload?.id));
+  if (!authorData) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      'Invalid author id, this author doest not exist',
+    );
+  }
+  console.log('authorData');
+  const result = await BookModal.create(payload);
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
     success: true,

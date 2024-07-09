@@ -6,6 +6,7 @@ import { validateRequest } from '../middlewares/validation';
 const router = Router();
 
 router.get('/', authorControllers.getAllAuthor);
+router.get('/:id', authorControllers.getSingleAuthor);
 router.post(
   '/',
   authorValidations.createAuthorValidationSchema,

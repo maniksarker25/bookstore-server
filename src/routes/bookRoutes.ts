@@ -2,13 +2,14 @@ import { Router } from 'express';
 import { authorValidations } from '../validationSchemas/author.validation';
 import { validateRequest } from '../middlewares/validation';
 import { bookControllers } from '../controllers/Book';
+import { bookValidations } from '../validationSchemas/book.validation';
 
 const router = Router();
 
 router.get('/', bookControllers.getAllBook);
 router.post(
   '/',
-  authorValidations.createAuthorValidationSchema,
+  bookValidations.createBookValidationSchema,
   validateRequest,
   bookControllers.createBook,
 );

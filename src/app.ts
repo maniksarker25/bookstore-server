@@ -5,6 +5,7 @@ import cors from 'cors';
 import notFound from './utils/notFound';
 import { authorRoutes } from './routes/authorRoutes';
 import globalErrorHandler from './middlewares/globalErrorHandler';
+import { bookRoutes } from './routes/bookRoutes';
 
 // import authorRoutes from './routes/authorRoutes';
 // import bookRoutes from './routes/bookRoutes';
@@ -18,7 +19,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use('/api/authors', authorRoutes);
-// app.use('/api', bookRoutes);
+app.use('/api/books', bookRoutes);
 
 app.use(globalErrorHandler);
 app.use(notFound);

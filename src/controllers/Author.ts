@@ -4,6 +4,7 @@ import catchAsync from '../utils/catchAsync';
 import sendResponse from '../utils/sendResponse';
 import AppError from '../utils/appError';
 
+// create author ----------
 const createAuthor = catchAsync(async (req, res) => {
   const result = await AuthorModel.create(req.body);
   sendResponse(res, {
@@ -14,6 +15,21 @@ const createAuthor = catchAsync(async (req, res) => {
   });
 });
 
+// get single author ----------------
+const getSingleAuthor = catchAsync(async (req, res) => {
+  const result = await AuthorModel.findById(Number(req.params.id));
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Author not found');
+  }
+  sendResponse(res, {
+    statusCode: httpStatus.CREATED,
+    success: true,
+    message: 'Author retrieved successfully',
+    data: result,
+  });
+});
+
+// get all author --------------------
 const getAllAuthor = catchAsync(async (req, res) => {
   const result = await AuthorModel.findAll();
   sendResponse(res, {
@@ -59,6 +75,7 @@ const deleteAuthor = catchAsync(async (req, res) => {
 
 export const authorControllers = {
   createAuthor,
+  getSingleAuthor,
   getAllAuthor,
   updateAuthor,
   deleteAuthor,
