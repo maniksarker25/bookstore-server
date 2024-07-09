@@ -50,6 +50,25 @@ const getSingleBook = catchAsync(async (req, res) => {
   });
 });
 
+// get books for a specific author ----------------
+const getBooksForSpecificAuthor = catchAsync(async (req, res) => {
+  const authorId = Number(req.params.id);
+  const authorData = await AuthorModel.findById(authorId);
+  if (!authorData) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      'Invalid author id , this author does not exist',
+    );
+  }
+  const result = await BookModal.findByAuthorId(authorId);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Book retrieved successfully for a specific author',
+    data: result,
+  });
+});
+
 // update book ----------------
 const updateBook = catchAsync(async (req, res) => {
   const id = Number(req.params.id);
@@ -103,6 +122,7 @@ export const bookControllers = {
   createBook,
   getSingleBook,
   getAllBook,
+  getBooksForSpecificAuthor,
   updateBook,
   deleteBook,
 };

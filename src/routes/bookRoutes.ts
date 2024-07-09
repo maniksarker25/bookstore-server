@@ -7,6 +7,7 @@ const router = Router();
 
 router.get('/', bookControllers.getAllBook);
 router.get('/:id', bookControllers.getSingleBook);
+router.get('/author/:id', bookControllers.getBooksForSpecificAuthor);
 router.post(
   '/',
   bookValidations.createBookValidationSchema,
