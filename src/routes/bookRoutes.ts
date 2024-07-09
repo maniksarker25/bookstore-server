@@ -6,21 +6,23 @@ import auth from '../middlewares/auth';
 
 const router = Router();
 
-router.get('/', auth(), bookControllers.getAllBook);
+router.get('/', bookControllers.getAllBook);
 router.get('/:id', bookControllers.getSingleBook);
 router.get('/author/:id', bookControllers.getBooksForSpecificAuthor);
 router.post(
   '/',
+  auth(),
   bookValidations.createBookValidationSchema,
   validateRequest,
   bookControllers.createBook,
 );
 router.put(
   '/:id',
+  auth(),
   bookValidations.updateBookValidationSchema,
   validateRequest,
   bookControllers.updateBook,
 );
-router.delete('/:id', bookControllers.deleteBook);
+router.delete('/:id', auth(), bookControllers.deleteBook);
 
 export const bookRoutes = router;
