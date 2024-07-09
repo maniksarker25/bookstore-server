@@ -31,12 +31,21 @@ const getSingleAuthor = catchAsync(async (req, res) => {
 
 // get all author --------------------
 const getAllAuthor = catchAsync(async (req, res) => {
-  const result = await AuthorModel.findAll();
+  const page = parseInt(req?.query?.page as string, 10) || 1;
+  const limit = parseInt(req?.query?.limit as string, 10) || 10;
+
+  const result = await AuthorModel.findAll(page, limit);
+
   sendResponse(res, {
-    statusCode: httpStatus.OK,
+    statusCode: 200,
     success: true,
-    message: 'Author retrieved successfully',
-    data: result,
+    message: 'Authors retrieved successfully',
+    meta: {
+      page: result?.page,
+      limit: result?.limit,
+      total: result?.total,
+    },
+    data: result?.authors,
   });
 });
 
@@ -48,7 +57,10 @@ const updateAuthor = catchAsync(async (req, res) => {
 
   const author = await AuthorModel.findById(id);
   if (!author) {
-    throw new AppError(httpStatus.NOT_FOUND, 'Author not found');
+    throw new AppError(
+      httpStatus.NOT_FOUND,
+      'Invalid author id,this author does not exist',
+    );
   }
   const result = await AuthorModel.update(id, updatedAuthorData);
   sendResponse(res, {
@@ -65,7 +77,10 @@ const deleteAuthor = catchAsync(async (req, res) => {
 
   const author = await AuthorModel.findById(id);
   if (!author) {
-    throw new AppError(httpStatus.NOT_FOUND, 'Author not found');
+    throw new AppError(
+      httpStatus.NOT_FOUND,
+      'Invalid author id,this author does not exist',
+    );
   }
   await AuthorModel.delete(id);
   sendResponse(res, {

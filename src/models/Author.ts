@@ -1,8 +1,30 @@
 import db from '../db/db';
 import { TAuthor } from '../types/author';
 class AuthorModel {
-  static async findAll(): Promise<TAuthor[]> {
-    return db('authors').select('*');
+  static async findAll(
+    page = 1,
+    limit = 10,
+  ): Promise<{
+    authors: TAuthor[];
+    total: number;
+    page: number;
+    limit: number;
+  }> {
+    const offset = (page - 1) * limit;
+
+    // Fetch authors for the current page and limit
+    const authors = await db('authors').select('*').limit(limit).offset(offset);
+
+    // Fetch total count of authors
+    const [{ count }] = await db('authors').count('* as count');
+    const total = Number(count);
+
+    return {
+      authors,
+      total,
+      page,
+      limit,
+    };
   }
 
   static async findById(id: number): Promise<TAuthor | undefined> {
